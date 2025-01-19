@@ -42,14 +42,20 @@ def main(config):
     rate_tomorrow = prices[0]["value_inc_vat"]  # Last item is tomorrow
 
     percent_change = format_percentage_change(rate_today, rate_tomorrow)
-    print("change", percent_change)
-    print("rate_today", rate_today)
-    print("rate_tomorrow", rate_tomorrow)
 
-    # Compute y-limits manually
-    y_min = data_points[0][1]
-    y_max = data_points[0][1]
+    # Compute the average price
+    total_price = 0
     for _, value in data_points:
+        total_price += value
+    average_price = total_price / len(data_points)
+
+    # Shift data points so the average price becomes 0
+    shifted_data_points = [(day, value - average_price) for day, value in data_points]
+
+    # Compute y-limits for the shifted data points
+    y_min = shifted_data_points[0][1]
+    y_max = shifted_data_points[0][1]
+    for _, value in shifted_data_points:
         if value < y_min:
             y_min = value
         if value > y_max:
@@ -59,14 +65,14 @@ def main(config):
         render.Column(
             children=[
                 render.Text(" %s" % rate_today),
-                render.Text(" %s (%s)" % (rate_tomorrow, percent_change)),
+                render.Text(" %s %s" % (rate_tomorrow, percent_change)),
                 render.Plot(
-                    data=data_points,
+                    data=shifted_data_points,
                     width=64,
                     height=16,
                     color="#f00",
                     color_inverted="#0f0",
-                    x_lim=(0, len(data_points) - 1),
+                    x_lim=(0, len(shifted_data_points) - 1),
                     y_lim=(y_min - 1, y_max + 1),  # Padding added to y-limits
                     fill=True,
                 ),
