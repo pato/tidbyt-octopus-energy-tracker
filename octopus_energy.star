@@ -68,12 +68,27 @@ def main(config):
     return render.Root(
         render.Column(
             children=[
-                render.Text(" %s" % format_two_decimals(rate_today)),
-                render.Text(" %s %s" % (format_two_decimals(rate_tomorrow), percent_change)),
+                render.Row(
+                    expanded=True, # Use as much horizontal space as possible
+                    main_align="space_evenly", # Controls horizontal alignment
+                    cross_align="center", # Controls vertical alignment
+                    children = [
+                        render.Text(content=("%s" % format_two_decimals(rate_today)), color="#F050F8"),
+                        render.Text(content=("%s" % format_two_decimals(rate_tomorrow)), color="#B6B2DF"),
+                    ],
+                ),
+                render.Row(
+                    expanded=True, # Use as much horizontal space as possible
+                    main_align="space_evenly", # Controls horizontal alignment
+                    cross_align="center", # Controls vertical alignment
+                    children = [
+                        render.Text(content=("avg: %s" % format_two_decimals(average_price)), color="#099", font="CG-pixel-4x5-mono"),
+                    ],
+                ),
                 render.Plot(
                     data=shifted_data_points,
                     width=64,
-                    height=16,
+                    height=20,
                     color="#f00",
                     color_inverted="#0f0",
                     x_lim=(0, len(shifted_data_points) - 1),
