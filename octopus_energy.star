@@ -60,8 +60,8 @@ def main(config):
     return render.Root(
         render.Column(
             children=[
-                render.Text("%s" % rate_today),
-                render.Text("%s (%s)" % (rate_tomorrow, percent_change)),
+                render.Text(" %s" % rate_today),
+                render.Text(" %s (%s)" % (rate_tomorrow, percent_change)),
                 render.Plot(
                     data=data_points,
                     width=64,
