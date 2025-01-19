@@ -37,8 +37,6 @@ def main(config):
         value = price["value_inc_vat"]
         data_points.append((day, value))
 
-    print(prices)
-
     # Calculate today's and tomorrow's rates
     rate_today = prices[1]["value_inc_vat"]  # Second to last item is today
     rate_tomorrow = prices[0]["value_inc_vat"]  # Last item is tomorrow
