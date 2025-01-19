@@ -73,8 +73,10 @@ def main(config):
                     main_align="space_evenly", # Controls horizontal alignment
                     cross_align="center", # Controls vertical alignment
                     children = [
-                        render.Text(content=("%s" % format_two_decimals(rate_today)), color="#F050F8"),
-                        render.Text(content=("%s" % format_two_decimals(rate_tomorrow)), color="#B6B2DF"),
+                        # render.Text(content=("%s" % format_two_decimals(rate_today)), color="#F050F8"),
+                        render.Text(content=("%s" % format_two_decimals(rate_today))),
+                        # render.Text(content=("%s" % format_two_decimals(rate_tomorrow)), color="#B6B2DF"),
+                        render.Text(content=("%s" % format_two_decimals(rate_tomorrow)), color="#9897A9"),
                     ],
                 ),
                 render.Row(
@@ -88,7 +90,7 @@ def main(config):
                 render.Plot(
                     data=shifted_data_points,
                     width=64,
-                    height=20,
+                    height=16,
                     color="#f00",
                     color_inverted="#0f0",
                     x_lim=(0, len(shifted_data_points) - 1),
