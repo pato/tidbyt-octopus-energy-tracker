@@ -14,7 +14,7 @@ def main(config):
     timezone = config.get("timezone") or "Europe/London"
     now = time.now().in_location(timezone)
     tomorrow = now + (time.hour * 24 * 2)
-    start = now - (time.hour * 24 * 7)
+    start = now - (time.hour * 24 * 30)
 
     product = "SILVER-BB-23-12-06"
     tariff = "E-FLAT2R-SILVER-BB-23-12-06-C"
@@ -28,44 +28,50 @@ def main(config):
     if rep.status_code != 200:
         fail("Octopus request failed with status %d", rep.status_code)
 
-    # check the valid_from/valid_to and see if we have the price for tomorrow already
+    # Parse the response to extract prices and dates
+    prices = rep.json()["results"]
+    data_points = []
 
-    rate_today = rep.json()["results"][1]["value_inc_vat"]
-    rate_tomorrow = rep.json()["results"][0]["value_inc_vat"]
+    for idx, price in enumerate(reversed(prices)):  # Reverse to order by time
+        day = idx
+        value = price["value_inc_vat"]
+        data_points.append((day, value))
+
+    print(prices)
+
+    # Calculate today's and tomorrow's rates
+    rate_today = prices[1]["value_inc_vat"]  # Second to last item is today
+    rate_tomorrow = prices[0]["value_inc_vat"]  # Last item is tomorrow
 
     percent_change = format_percentage_change(rate_today, rate_tomorrow)
     print("change", percent_change)
     print("rate_today", rate_today)
     print("rate_tomorrow", rate_tomorrow)
 
+    # Compute y-limits manually
+    y_min = data_points[0][1]
+    y_max = data_points[0][1]
+    for _, value in data_points:
+        if value < y_min:
+            y_min = value
+        if value > y_max:
+            y_max = value
+
     return render.Root(
         render.Column(
             children=[
                 render.Text("%s" % rate_today),
-                render.Text("%s %s" % (rate_tomorrow, percent_change)),
+                render.Text("%s (%s)" % (rate_tomorrow, percent_change)),
                 render.Plot(
-                    data = [
-                        (0, 3.35),
-                        (1, 2.15),
-                        (2, 2.37),
-                        (3, -0.31),
-                        (4, -3.53),
-                        (5, 1.31),
-                        (6, -1.3),
-                        (7, 4.60),
-                        (8, 3.33),
-                        (9, 5.92),
-                        ],
-                    width = 64,
-                    height = 16,
-                    # color = "#0f0",
-                    # color_inverted = "#f00",
-                    color = "#f00",
-                    color_inverted = "#0f0",
-                    x_lim = (0, 9),
-                    y_lim = (-5, 7),
-                    fill = True,
-                    ),
+                    data=data_points,
+                    width=64,
+                    height=16,
+                    color="#f00",
+                    color_inverted="#0f0",
+                    x_lim=(0, len(data_points) - 1),
+                    y_lim=(y_min - 1, y_max + 1),  # Padding added to y-limits
+                    fill=True,
+                ),
             ],
         )
     )
