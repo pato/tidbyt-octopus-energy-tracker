@@ -10,6 +10,10 @@ def format_percentage_change(rate_today, rate_tomorrow):
     else:
         return str(percentage_change) + "%"
 
+def format_two_decimals(value):
+    # Round to 2 decimal places
+    return str(math.round(value * 100) / 100)
+
 def main(config):
     timezone = config.get("timezone") or "Europe/London"
     now = time.now().in_location(timezone)
@@ -64,8 +68,8 @@ def main(config):
     return render.Root(
         render.Column(
             children=[
-                render.Text(" %s" % rate_today),
-                render.Text(" %s %s" % (rate_tomorrow, percent_change)),
+                render.Text(" %s" % format_two_decimals(rate_today)),
+                render.Text(" %s %s" % (format_two_decimals(rate_tomorrow), percent_change)),
                 render.Plot(
                     data=shifted_data_points,
                     width=64,
