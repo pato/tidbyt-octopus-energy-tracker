@@ -15,7 +15,7 @@ def format_two_decimals(value):
     return str(math.round(value * 100) / 100)
 
 def main(config):
-    timezone = config.get("timezone") or "Europe/London"
+    timezone = config.get("timezone") or "UTC"
     now = time.now().in_location(timezone)
     tomorrow = now + (time.hour * 24 * 2)
     start = now - (time.hour * 24 * 30)
@@ -74,9 +74,7 @@ def main(config):
                         main_align="space_evenly", # Controls horizontal alignment
                         cross_align="center", # Controls vertical alignment
                         children = [
-                            # render.Text(content=("%s" % format_two_decimals(rate_today)), color="#F050F8"),
                             render.Text(content=("%s" % format_two_decimals(rate_today))),
-                            # render.Text(content=("%s" % format_two_decimals(rate_tomorrow)), color="#B6B2DF"),
                             render.Text(content=("%s" % format_two_decimals(rate_tomorrow)), color="#9897A9"),
                         ],
                     ),
