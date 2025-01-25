@@ -11,11 +11,10 @@ def format_percentage_change(rate_today, rate_tomorrow):
         return str(percentage_change) + "%"
 
 def format_two_decimals(value):
-    # Round to 2 decimal places
     return str(math.round(value * 100) / 100)
 
 def main(config):
-    timezone = config.get("timezone") or "UTC"
+    timezone = "UTC"
     now = time.now().in_location(timezone)
     tomorrow = now + (time.hour * 24 * 2)
     start = now - (time.hour * 24 * 30)
@@ -26,7 +25,6 @@ def main(config):
     period_to = tomorrow.format("2006-01-02T00:00Z")
 
     price_url = "https://api.octopus.energy/v1/products/{}/electricity-tariffs/{}/day-unit-rates/?period_from={}&period_to={}".format(product, tariff, period_from, period_to)
-    print("price_url", price_url)
 
     rep = http.get(price_url)
     if rep.status_code != 200:
@@ -100,3 +98,5 @@ def main(config):
             )
         )
     )
+
+# vim: filetype=python
