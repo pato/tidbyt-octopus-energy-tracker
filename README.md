@@ -2,7 +2,7 @@
 
 A simple Octopus Energy Flexible Tariff tracker for Tidbyt.
 
-![Image](https://plankenau.com/i/Rr0gAqMe9v7Fv.webp "octopus energy monitor")
+![Image](https://plankenau.com/i/8F0IuIuwNKYQB.png "octopus energy monitor")
 
 ## Features
 
