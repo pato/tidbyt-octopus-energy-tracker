@@ -19,8 +19,9 @@ def main(config):
     tomorrow = now + (time.hour * 24 * 2)
     start = now - (time.hour * 24 * 30)
 
-    product = "SILVER-BB-23-12-06"
-    tariff = "E-FLAT2R-SILVER-BB-23-12-06-C"
+    # this is basically a subtring of the tariff
+    product = "SILVER-24-12-31"
+    tariff = "E-FLAT2R-SILVER-24-12-31-C"
     period_from = start.format("2006-01-02T00:00Z")
     period_to = tomorrow.format("2006-01-02T00:00Z")
 
