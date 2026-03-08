@@ -20,8 +20,8 @@ def main(config):
     start = now - (time.hour * 24 * 30)
 
     # this is basically a subtring of the tariff
-    product = "SILVER-24-12-31"
-    tariff = "E-FLAT2R-SILVER-24-12-31-C"
+    product = "SILVER-25-09-02"
+    tariff = "E-FLAT2R-SILVER-25-09-02-C"
     period_from = start.format("2006-01-02T00:00Z")
     period_to = tomorrow.format("2006-01-02T00:00Z")
 
